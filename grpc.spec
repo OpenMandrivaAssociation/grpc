@@ -201,7 +201,7 @@ Provides:       %{name}-devel = %{EVRD}
 EOF
 
 for i in $LIBPACKAGES; do
-	echo "Requires:	$i = %{EVRD}" >>%{specpartsdir}/%{devname}.specpart
+	echo "Requires:	%{mklibname $i} = %{EVRD}" >>%{specpartsdir}/%{devname}.specpart
 done
 
 cat >>%{specpartsdir}/%{devname}.specpart <<EOF

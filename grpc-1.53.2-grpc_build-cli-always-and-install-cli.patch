@@ -1,0 +1,48 @@
+diff -up grpc-1.62.1/CMakeLists.txt.1~ grpc-1.62.1/CMakeLists.txt
+--- grpc-1.62.1/CMakeLists.txt.1~	2024-03-08 02:33:47.000000000 +0100
++++ grpc-1.62.1/CMakeLists.txt	2024-03-20 18:01:26.786377207 +0100
+@@ -4643,7 +4643,6 @@ foreach(_hdr
+ endforeach()
+ 
+ endif()
+-if(gRPC_BUILD_TESTS)
+ 
+ 
+ add_library(grpc++_test_config
+@@ -4694,7 +4693,12 @@ target_link_libraries(grpc++_test_config
+   gpr
+ )
+ 
+-
++if(gRPC_INSTALL)
++  install(TARGETS grpc++_test_config EXPORT gRPCTargets
++    RUNTIME DESTINATION ${gRPC_INSTALL_BINDIR}
++    LIBRARY DESTINATION ${gRPC_INSTALL_LIBDIR}
++    ARCHIVE DESTINATION ${gRPC_INSTALL_LIBDIR}
++  )
+ endif()
+ if(gRPC_BUILD_TESTS)
+ 
+@@ -15309,7 +15313,6 @@ target_link_libraries(grpc_byte_buffer_r
+ 
+ 
+ endif()
+-if(gRPC_BUILD_TESTS)
+ 
+ add_executable(grpc_cli
+   ${_gRPC_PROTO_GENS_DIR}/src/proto/grpc/reflection/v1alpha/reflection.pb.cc
+@@ -15358,7 +15361,14 @@ target_link_libraries(grpc_cli
+ )
+ 
+ 
++if(gRPC_INSTALL)
++  install(TARGETS grpc_cli EXPORT gRPCTargets
++    RUNTIME DESTINATION ${gRPC_INSTALL_BINDIR}
++    LIBRARY DESTINATION ${gRPC_INSTALL_LIBDIR}
++    ARCHIVE DESTINATION ${gRPC_INSTALL_LIBDIR}
++  )
+ endif()
++
+ if(gRPC_BUILD_TESTS)
+ 
+ add_executable(grpc_completion_queue_test

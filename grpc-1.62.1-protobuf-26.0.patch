@@ -1,0 +1,24 @@
+diff -up grpc-1.62.1/test/cpp/util/proto_file_parser.cc.omv~ grpc-1.62.1/test/cpp/util/proto_file_parser.cc
+--- grpc-1.62.1/test/cpp/util/proto_file_parser.cc.omv~	2024-03-22 22:16:20.052975375 +0100
++++ grpc-1.62.1/test/cpp/util/proto_file_parser.cc	2024-03-22 22:18:51.872793167 +0100
+@@ -48,16 +48,16 @@ class ErrorPrinter : public protobuf::co
+  public:
+   explicit ErrorPrinter(ProtoFileParser* parser) : parser_(parser) {}
+ 
+-  void AddError(const std::string& filename, int line, int column,
+-                const std::string& message) override {
++  void RecordError(absl::string_view filename, int line, int column,
++                absl::string_view message) override {
+     std::ostringstream oss;
+     oss << "error " << filename << " " << line << " " << column << " "
+         << message << "\n";
+     parser_->LogError(oss.str());
+   }
+ 
+-  void AddWarning(const std::string& filename, int line, int column,
+-                  const std::string& message) override {
++  void RecordWarning(absl::string_view filename, int line, int column,
++                  absl::string_view message) override {
+     std::cerr << "warning " << filename << " " << line << " " << column << " "
+               << message << std::endl;
+   }

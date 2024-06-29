@@ -12,8 +12,8 @@
 %endif
 
 Name:           grpc
-Version:        1.62.1
-Release:        2
+Version:        1.65.0
+Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
 Group:          System/Libraries
@@ -21,11 +21,9 @@ URL:            https://www.grpc.io
 Source0:        https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:	https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
 Source2:	https://github.com/census-instrumentation/opencensus-proto/archive/refs/heads/master.tar.gz
-Patch0:		grpc-1.62.1-protobuf-26.0.patch
+#Patch0:		grpc-1.62.1-protobuf-26.0.patch
 Patch13:        grpc-1.53.2-grpc_build-cli-always-and-install-cli.patch
 #Patch15:	grpc-1.43.0-system-gtest.patch
-Patch16:	0001-Python-Specify-noexcept-for-cdef-functions.patch
-Patch17:	python-grpcio-cython3.patch
 BuildRequires:  cmake
 BuildRequires:  cmake(absl)
 BuildRequires:  gcc-c++

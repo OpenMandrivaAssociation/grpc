@@ -1,4 +1,4 @@
 sources:
   master.tar.gz: 0e77c99e3ec4d60ecea2aea770d721c7abeddfe3
   v1.14.0.tar.gz: 2b28c2a3a30d86b1759543ef61fac3c4d69f8c4c
-  grpc-1.65.0.tar.gz: 503f018acbf46d0d3021f848d180dd63ed435d14
+  grpc-1.65.1.tar.gz: 726d38833a24094be4a49f9b72b4eae89dcbc5a6

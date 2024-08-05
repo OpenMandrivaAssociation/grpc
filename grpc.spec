@@ -187,6 +187,13 @@ export GRPC_PYTHON_BUILD_SYSTEM_ABSL=True
 %py_install
 %endif
 
+# We don't currently ship opentelemetry and therefore the plugin doesn't get
+# built -- but its pkgconfig file (dragging in dependencies) is installed
+# anyway. Remove it.
+# FIXME get rid of this line if and when we package opentelemetry and add
+# it as a dependency.
+rm -f %{buildroot}%{_libdir}/pkgconfig/grpcpp_otel_plugin.pc
+
 %libpackages -d
 
 cat >%{specpartsdir}/%{devname}.specpart <<EOF

@@ -12,7 +12,7 @@
 %endif
 
 Name:           grpc
-Version:        1.66.1
+Version:        1.67.0
 Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
@@ -141,7 +141,7 @@ find . -type f -name .gitignore -print -delete
 # the main C++ build, we can use CMAKE_CXX_STANDARD. For extensions, examples,
 # etc., we must patch.
 sed -r -i 's/(std=c\+\+)1[1,4]/\1%{cpp_std}/g' \
-    setup.py grpc.gyp Rakefile \
+    setup.py Rakefile \
     examples/cpp/*/Makefile \
     examples/cpp/*/CMakeLists.txt \
     tools/run_tests/artifacts/artifact_targets.py \

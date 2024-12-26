@@ -1,4 +1,4 @@
 sources:
   v1.14.0.tar.gz: 2b28c2a3a30d86b1759543ef61fac3c4d69f8c4c
   master.tar.gz: 0e77c99e3ec4d60ecea2aea770d721c7abeddfe3
-  grpc-1.67.0.tar.gz: 52327718d84c8375a72ca48d1ab154457e1d84f9
+  grpc-1.69.0.tar.gz: feaa637df6f9b16938ae0e1d6c9e9926a0e016a3

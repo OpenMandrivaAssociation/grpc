@@ -12,8 +12,8 @@
 %endif
 
 Name:           grpc
-Version:        1.67.0
-Release:        4
+Version:        1.71.0
+Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
 Group:          System/Libraries
@@ -21,6 +21,10 @@ URL:            https://www.grpc.io
 Source0:        https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:	https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
 Source2:	https://github.com/census-instrumentation/opencensus-proto/archive/refs/heads/master.tar.gz
+Source3:	https://github.com/cncf/xds/archive/3a472e524827f72d1ad621c4983dd5af54c46776.tar.gz
+Source4:	https://github.com/bufbuild/protoc-gen-validate/archive/32c2415389a3538082507ae537e7edd9578c64ed.tar.gz
+Source5:	https://github.com/googleapis/googleapis/archive/fe8ba054ad4f7eca946c2d14a63c3f07c0b586a0.tar.gz
+Source6:	https://github.com/envoyproxy/data-plane-api/archive/4de3c74cf21a9958c1cf26d8993c55c6e0d28b49.tar.gz
 #Patch0:		grpc-1.62.1-protobuf-26.0.patch
 Patch13:        grpc-1.53.2-grpc_build-cli-always-and-install-cli.patch
 #Patch15:	grpc-1.43.0-system-gtest.patch
@@ -105,17 +109,25 @@ Python3 bindings for gRPC library.
 
 %prep
 %autosetup -a1 -p1
-tar xf %{S:1}
-tar xf %{S:2}
 
 # Remove bundled googletest
 #sed -i -e '/\(gtest\|gmock\)-all.cc/d' CMakeLists.txt
 #rm -rf third_party/googletest/
 #mkdir -p third_party/googletest/google{test,mock}/include
-rm -rf third_party/googletest
-mv googletest-* third_party/googletest
-rm -rf third_party/opencensus-proto
-mv opencensus-proto-master third_party/opencensus-proto
+cd third_party
+tar xf %{S:1}
+tar xf %{S:2}
+tar xf %{S:3}
+tar xf %{S:4}
+tar xf %{S:5}
+tar xf %{S:6}
+for i in googletest opencensus-proto xds protoc-gen-validate googleapis; do
+	rm -rf $i
+	mv $i-* $i
+done
+rm -rf envoy-api
+mv data-plane-api-* envoy-api
+cd ..
 
 # Do not DL opencensus-proto
 ln -s $(pwd)/opencensus-proto-*/src third_party/opencensus-proto/src
@@ -171,12 +183,20 @@ cd ..
 
 %if %{with python}
 # build python module
+%if "%{cpp_std}" != "17"
+sed -i -e 's,c++17,c++%{cpp_std},g' setup.py
+%endif
 export GRPC_PYTHON_BUILD_WITH_CYTHON=True
 export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=True
 export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=True
 export GRPC_PYTHON_BUILD_SYSTEM_CARES=True
 export GRPC_PYTHON_BUILD_SYSTEM_RE2=True
 export GRPC_PYTHON_BUILD_SYSTEM_ABSL=True
+# Sadly the build system is very much messed up and
+# passes -std=c++20 even to C files, which makes clang
+# throw a fatal error while gcc throws a warning
+export CC=gcc
+export CXX=g++
 %py_build
 %endif
 

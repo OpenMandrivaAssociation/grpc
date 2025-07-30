@@ -11,20 +11,84 @@
 %define _disable_ld_no_undefined 1
 %endif
 
+%global s1_name abseil-cpp
+%global s1_commit 76bb24329e8bf5f39704eb10d21b9a80befa7c81
+%global s1_shortcommit %(c=%{s1_commit}; echo ${c:0:7})
+
+%global s2_name benchmark
+%global s2_commit 12235e24652fc7f809373e7c11a5f73c5763fc4c
+%global s2_shortcommit %(c=%{s2_commit}; echo ${c:0:7})
+
+%global s3_name bloaty
+%global s3_commit 60209eb1ccc34d5deefb002d1b7f37545204f7f2
+%global s3_shortcommit %(c=%{s3_commit}; echo ${c:0:7})
+
+%global s4_name boringssl
+%global s4_commit c63fadbde60a2224c22189d14c4001bbd2a3a629
+%global s4_shortcommit %(c=%{s4_commit}; echo ${c:0:7})
+
+%global s5_name data-plane-api
+%global s5_commit 4de3c74cf21a9958c1cf26d8993c55c6e0d28b49
+%global s5_shortcommit %(c=%{s5_commit}; echo ${c:0:7})
+
+%global s6_name googleapis
+%global s6_commit fe8ba054ad4f7eca946c2d14a63c3f07c0b586a0
+%global s6_shortcommit %(c=%{s6_commit}; echo ${c:0:7})
+
+%global s7_name googletest
+%global s7_commit 52eb8108c5bdec04579160ae17225d66034bd723
+%global s7_shortcommit %(c=%{s7_commit}; echo ${c:0:7})
+
+%global s8_name opencensus-proto
+%global s8_commit 4aa53e15cbf1a47bc9087e6cfdca214c1eea4e89
+%global s8_shortcommit %(c=%{s8_commit}; echo ${c:0:7})
+
+%global s9_name opentelemetry-proto
+%global s9_commit 60fa8754d890b5c55949a8c68dcfd7ab5c2395df
+%global s9_shortcommit %(c=%{s9_commit}; echo ${c:0:7})
+
+%global s10_name protobuf
+%global s10_commit 74211c0dfc2777318ab53c2cd2c317a2ef9012de
+%global s10_shortcommit %(c=%{s10_commit}; echo ${c:0:7})
+
+%global s11_name protoc-gen-validate
+%global s11_commit 7b06248484ceeaa947e93ca2747eccf336a88ecc
+%global s11_shortcommit %(c=%{s11_commit}; echo ${c:0:7})
+
+%global s12_name re2
+%global s12_commit 0c5616df9c0aaa44c9440d87422012423d91c7d1
+%global s12_shortcommit %(c=%{s12_commit}; echo ${c:0:7})
+
+%global s13_name xds
+%global s13_commit 3a472e524827f72d1ad621c4983dd5af54c46776
+%global s13_shortcommit %(c=%{s13_commit}; echo ${c:0:7})
+
+%global s14_name zlib
+%global s14_commit f1f503da85d52e56aae11557b4d79a42bcaa2b86
+%global s14_shortcommit %(c=%{s14_commit}; echo ${c:0:7})
+
 Name:           grpc
-Version:        1.72.0
+Version:        1.74.0
 Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
 Group:          System/Libraries
 URL:            https://www.grpc.io
 Source0:        https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:	https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
-Source2:	https://github.com/census-instrumentation/opencensus-proto/archive/refs/heads/master.tar.gz
-Source3:	https://github.com/cncf/xds/archive/3a472e524827f72d1ad621c4983dd5af54c46776.tar.gz
-Source4:	https://github.com/bufbuild/protoc-gen-validate/archive/32c2415389a3538082507ae537e7edd9578c64ed.tar.gz
-Source5:	https://github.com/googleapis/googleapis/archive/fe8ba054ad4f7eca946c2d14a63c3f07c0b586a0.tar.gz
-Source6:	https://github.com/envoyproxy/data-plane-api/archive/4de3c74cf21a9958c1cf26d8993c55c6e0d28b49.tar.gz
+Source1:        https://github.com/abseil/%{s1_name}/archive/%{s1_commit}/%{s1_name}-%{s1_shortcommit}.tar.gz
+Source2:        https://github.com/google/%{s2_name}/archive/%{s2_commit}/%{s2_name}-%{s2_shortcommit}.tar.gz
+Source3:        https://github.com/google/%{s3_name}/archive/%{s3_commit}/%{s3_name}-%{s3_shortcommit}.tar.gz
+Source4:        https://github.com/google/%{s4_name}/archive/%{s4_commit}/%{s4_name}-%{s4_shortcommit}.tar.gz
+Source5:        https://github.com/envoyproxy/%{s5_name}/archive/%{s5_commit}/%{s5_name}-%{s5_shortcommit}.tar.gz
+Source6:        https://github.com/googleapis/%{s6_name}/archive/%{s6_commit}/%{s6_name}-%{s6_shortcommit}.tar.gz
+Source7:        https://github.com/google/%{s7_name}/archive/%{s7_commit}/%{s7_name}-%{s7_shortcommit}.tar.gz
+Source8:        https://github.com/census-instrumentation/%{s8_name}/archive/%{s8_commit}/%{s8_name}-%{s8_shortcommit}.tar.gz
+Source9:        https://github.com/open-telemetry/%{s9_name}/archive/%{s9_commit}/%{s9_name}-%{s9_shortcommit}.tar.gz
+Source10:       https://github.com/protocolbuffers/%{s10_name}/archive/%{s10_commit}/%{s10_name}-%{s10_shortcommit}.tar.gz
+Source11:        https://github.com/bufbuild/%{s11_name}/archive/%{s11_commit}/%{s11_name}-%{s11_shortcommit}.tar.gz
+Source12:        https://github.com/google/%{s12_name}/archive/%{s12_commit}/%{s12_name}-%{s12_shortcommit}.tar.gz
+Source13:        https://github.com/cncf/%{s13_name}/archive/%{s13_commit}/%{s13_name}-%{s13_shortcommit}.tar.gz
+Source14:        https://github.com/madler/%{s14_name}/archive/%{s14_commit}/%{s14_name}-%{s14_shortcommit}.tar.gz
 #Patch0:		grpc-1.62.1-protobuf-26.0.patch
 Patch13:        grpc-1.53.2-grpc_build-cli-always-and-install-cli.patch
 #Patch15:	grpc-1.43.0-system-gtest.patch
@@ -121,6 +185,14 @@ tar xf %{S:3}
 tar xf %{S:4}
 tar xf %{S:5}
 tar xf %{S:6}
+tar xf %{S:7}
+tar xf %{S:8}
+tar xf %{S:9}
+tar xf %{S:10}
+tar xf %{S:11}
+tar xf %{S:12}
+tar xf %{S:13}
+tar xf %{S:14}
 for i in googletest opencensus-proto xds protoc-gen-validate googleapis; do
 	rm -rf $i
 	mv $i-* $i

@@ -68,8 +68,8 @@
 %global s14_shortcommit %(c=%{s14_commit}; echo ${c:0:7})
 
 Name:           grpc
-Version:        1.74.0
-Release:        2
+Version:        1.74.1
+Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
 Group:          System/Libraries

@@ -68,7 +68,7 @@
 %global s14_shortcommit %(c=%{s14_commit}; echo ${c:0:7})
 
 Name:           grpc
-Version:        1.74.1
+Version:        1.75.0
 Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
@@ -85,11 +85,11 @@ Source7:        https://github.com/google/%{s7_name}/archive/%{s7_commit}/%{s7_n
 Source8:        https://github.com/census-instrumentation/%{s8_name}/archive/%{s8_commit}/%{s8_name}-%{s8_shortcommit}.tar.gz
 Source9:        https://github.com/open-telemetry/%{s9_name}/archive/%{s9_commit}/%{s9_name}-%{s9_shortcommit}.tar.gz
 Source10:       https://github.com/protocolbuffers/%{s10_name}/archive/%{s10_commit}/%{s10_name}-%{s10_shortcommit}.tar.gz
-Source11:        https://github.com/bufbuild/%{s11_name}/archive/%{s11_commit}/%{s11_name}-%{s11_shortcommit}.tar.gz
-Source12:        https://github.com/google/%{s12_name}/archive/%{s12_commit}/%{s12_name}-%{s12_shortcommit}.tar.gz
-Source13:        https://github.com/cncf/%{s13_name}/archive/%{s13_commit}/%{s13_name}-%{s13_shortcommit}.tar.gz
-Source14:        https://github.com/madler/%{s14_name}/archive/%{s14_commit}/%{s14_name}-%{s14_shortcommit}.tar.gz
-#Patch0:		grpc-1.62.1-protobuf-26.0.patch
+Source11:       https://github.com/bufbuild/%{s11_name}/archive/%{s11_commit}/%{s11_name}-%{s11_shortcommit}.tar.gz
+Source12:       https://github.com/google/%{s12_name}/archive/%{s12_commit}/%{s12_name}-%{s12_shortcommit}.tar.gz
+Source13:       https://github.com/cncf/%{s13_name}/archive/%{s13_commit}/%{s13_name}-%{s13_shortcommit}.tar.gz
+Source14:       https://github.com/madler/%{s14_name}/archive/%{s14_commit}/%{s14_name}-%{s14_shortcommit}.tar.gz
+#Patch0:	grpc-1.62.1-protobuf-26.0.patch
 Patch13:        grpc-1.53.2-grpc_build-cli-always-and-install-cli.patch
 #Patch15:	grpc-1.43.0-system-gtest.patch
 BuildRequires:  cmake

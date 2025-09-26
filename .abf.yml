@@ -13,4 +13,4 @@ sources:
   re2-0c5616d.tar.gz: d62b7d8ecb362a26d694104603e44380b38b1919
   xds-3a472e5.tar.gz: 69427a0ae15f93f3dc2669ebbe2657af3d25927a
   zlib-f1f503d.tar.gz: 90b9ef837731c5cab86d1e9a4da62e9bd6869b5e
-  grpc-1.75.0.tar.gz: 3103a8148e8eb66b59ccfd3719fee0cd9ebb92a9
+  grpc-1.75.1.tar.gz: caa4d2d39b944baee4cdad1c16fc0bdf2cba6f0a

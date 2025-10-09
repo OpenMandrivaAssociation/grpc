@@ -1,0 +1,12 @@
+diff -up grpc-1.75.1/setup.py.omv~ grpc-1.75.1/setup.py
+--- grpc-1.75.1/setup.py.omv~	2025-10-09 14:06:35.786918754 +0200
++++ grpc-1.75.1/setup.py	2025-10-09 14:06:51.549267572 +0200
+@@ -273,7 +273,7 @@ if EXTRA_ENV_COMPILE_ARGS is None:
+         EXTRA_ENV_COMPILE_ARGS += " /MT"
+     elif "linux" in sys.platform:
+         # GCC by defaults uses C17 so only C++17 needs to be specified.
+-        EXTRA_ENV_COMPILE_ARGS += " -std=c++17"
++        #EXTRA_ENV_COMPILE_ARGS += " -std=c++17"
+         EXTRA_ENV_COMPILE_ARGS += (
+             " -fvisibility=hidden -fno-wrapv -fno-exceptions"
+         )

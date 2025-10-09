@@ -1,5 +1,4 @@
 sources:
-  abseil-cpp-76bb243.tar.gz: a098b24cc0e17a121a34d8bbd05f8d70c708b93f
   benchmark-12235e2.tar.gz: 63ab1c5db46c4f46db7d23cb81661a4b799672d3
   bloaty-60209eb.tar.gz: b185c91ec513d44723e8b4bc6e91014febea35ed
   boringssl-c63fadb.tar.gz: 48c19560a9e332996d5d1890fe02e3566b798e0e
@@ -12,5 +11,4 @@ sources:
   protoc-gen-validate-7b06248.tar.gz: 45ce1a24b8aedd9c0ea32132a75fdd9a0f65d66b
   re2-0c5616d.tar.gz: d62b7d8ecb362a26d694104603e44380b38b1919
   xds-3a472e5.tar.gz: 69427a0ae15f93f3dc2669ebbe2657af3d25927a
-  zlib-f1f503d.tar.gz: 90b9ef837731c5cab86d1e9a4da62e9bd6869b5e
   grpc-1.75.1.tar.gz: caa4d2d39b944baee4cdad1c16fc0bdf2cba6f0a

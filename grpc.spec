@@ -11,10 +11,6 @@
 %define _disable_ld_no_undefined 1
 %endif
 
-%global s1_name abseil-cpp
-%global s1_commit 76bb24329e8bf5f39704eb10d21b9a80befa7c81
-%global s1_shortcommit %(c=%{s1_commit}; echo ${c:0:7})
-
 %global s2_name benchmark
 %global s2_commit 12235e24652fc7f809373e7c11a5f73c5763fc4c
 %global s2_shortcommit %(c=%{s2_commit}; echo ${c:0:7})
@@ -63,19 +59,14 @@
 %global s13_commit 3a472e524827f72d1ad621c4983dd5af54c46776
 %global s13_shortcommit %(c=%{s13_commit}; echo ${c:0:7})
 
-%global s14_name zlib
-%global s14_commit f1f503da85d52e56aae11557b4d79a42bcaa2b86
-%global s14_shortcommit %(c=%{s14_commit}; echo ${c:0:7})
-
 Name:           grpc
 Version:        1.75.1
-Release:        1
+Release:        2
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
 Group:          System/Libraries
 URL:            https://www.grpc.io
 Source0:        https://github.com/grpc/grpc/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:        https://github.com/abseil/%{s1_name}/archive/%{s1_commit}/%{s1_name}-%{s1_shortcommit}.tar.gz
 Source2:        https://github.com/google/%{s2_name}/archive/%{s2_commit}/%{s2_name}-%{s2_shortcommit}.tar.gz
 Source3:        https://github.com/google/%{s3_name}/archive/%{s3_commit}/%{s3_name}-%{s3_shortcommit}.tar.gz
 Source4:        https://github.com/google/%{s4_name}/archive/%{s4_commit}/%{s4_name}-%{s4_shortcommit}.tar.gz
@@ -88,10 +79,6 @@ Source10:       https://github.com/protocolbuffers/%{s10_name}/archive/%{s10_com
 Source11:       https://github.com/bufbuild/%{s11_name}/archive/%{s11_commit}/%{s11_name}-%{s11_shortcommit}.tar.gz
 Source12:       https://github.com/google/%{s12_name}/archive/%{s12_commit}/%{s12_name}-%{s12_shortcommit}.tar.gz
 Source13:       https://github.com/cncf/%{s13_name}/archive/%{s13_commit}/%{s13_name}-%{s13_shortcommit}.tar.gz
-Source14:       https://github.com/madler/%{s14_name}/archive/%{s14_commit}/%{s14_name}-%{s14_shortcommit}.tar.gz
-#Patch0:	grpc-1.62.1-protobuf-26.0.patch
-Patch13:        grpc-1.53.2-grpc_build-cli-always-and-install-cli.patch
-#Patch15:	grpc-1.43.0-system-gtest.patch
 BuildRequires:  cmake
 BuildRequires:  cmake(absl)
 BuildRequires:  gcc-c++
@@ -114,6 +101,10 @@ BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 BuildRequires:  python-cython
 %endif
+
+%patchlist
+grpc-1.53.2-grpc_build-cli-always-and-install-cli.patch
+grpc-1.75.1-dont-set-std-c++-for-c.patch
 
 %description
 gRPC is a modern open source high performance RPC framework that can run in any
@@ -172,14 +163,13 @@ Python3 bindings for gRPC library.
 #------------------------------------------------
 
 %prep
-%autosetup -a1 -p1
+%autosetup -p1
 
 # Remove bundled googletest
 #sed -i -e '/\(gtest\|gmock\)-all.cc/d' CMakeLists.txt
 #rm -rf third_party/googletest/
 #mkdir -p third_party/googletest/google{test,mock}/include
 cd third_party
-tar xf %{S:1}
 tar xf %{S:2}
 tar xf %{S:3}
 tar xf %{S:4}
@@ -192,7 +182,6 @@ tar xf %{S:10}
 tar xf %{S:11}
 tar xf %{S:12}
 tar xf %{S:13}
-tar xf %{S:14}
 for i in googletest opencensus-proto xds protoc-gen-validate googleapis; do
 	rm -rf $i
 	mv $i-* $i
@@ -248,6 +237,7 @@ export LDFLAGS="%{build_ldflags} -Wno-deprecated-declarations -std=gnu++%{cpp_st
        -DgRPC_RE2_PROVIDER=package        \
        -DgRPC_SSL_PROVIDER=package        \
        -DgRPC_ZLIB_PROVIDER=package       \
+       -DGRPC_PYTHON_BUILD_SYSTEM_ABSL:BOOL=ON \
        -DZLIB_LIBRARY=%{_libdir}/libz.so
 export LD_LIBRARY_PATH=$(pwd):$LD_LIBRARY_PATH
 %ninja_build
@@ -264,11 +254,6 @@ export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=True
 export GRPC_PYTHON_BUILD_SYSTEM_CARES=True
 export GRPC_PYTHON_BUILD_SYSTEM_RE2=True
 export GRPC_PYTHON_BUILD_SYSTEM_ABSL=True
-# Sadly the build system is very much messed up and
-# passes -std=c++20 even to C files, which makes clang
-# throw a fatal error while gcc throws a warning
-export CC=gcc
-export CXX=g++
 %py_build
 %endif
 

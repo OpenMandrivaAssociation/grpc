@@ -1,0 +1,116 @@
+From e35dccf942aafa7cf51bb88f8c9fa2e59449d9dc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bernhard=20Rosenkr=C3=A4nzer?= <bero@lindev.ch>
+Date: Mon, 15 Jun 2026 14:19:57 +0200
+Subject: [PATCH 2/2] Support system Abseil in Python build and bump C++
+ standard to gnu++20
+
+- GRPC_PYTHON_BUILD_SYSTEM_ABSL=1 now correctly skips all vendored
+  Abseil sources (the CORE_C_FILES filter plus the explicit
+  third_party/abseil-cpp/absl/log/initialize.cc addition) and links
+  the system libabsl_* libraries instead.
+- Bump the default C++ language standard from -std=c++17 (or /std:c++17)
+  to -std=gnu++20 everywhere it is injected for the grpcio extension
+  build:
+  * setup.py: libatomic probe, EXTRA_ENV_COMPILE_ARGS for Linux,
+    Darwin, and Windows, plus comments.
+  * src/python/grpcio/commands.py: cpp_specific_args sanitiser set
+    (used by the _compile monkey-patch in BuildExt).
+- This matches the main CMake/ninja build and is necessary for current
+  system Abseil headers (C++20 three-way comparison types,
+  enable_if_t shims, etc.).
+
+Users who want to keep using the system Abseil (to centralise fixes)
+can now do:
+
+    GRPC_PYTHON_BUILD_SYSTEM_ABSL=1 python setup.py build_ext --inplace
+
+(or the equivalent pip wheel / etc. invocation) and the Python
+bindings will build cleanly.
+---
+ setup.py                      | 24 ++++++++++++++++--------
+ src/python/grpcio/commands.py |  2 +-
+ 2 files changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index 48ce60bf..cf24844b 100644
+--- a/setup.py
++++ b/setup.py
+@@ -208,7 +208,7 @@ def check_linker_need_libatomic():
+     )
+     cxx = shlex.split(os.environ.get("CXX", "c++"))
+     cpp_test = subprocess.Popen(
+-        cxx + ["-x", "c++", "-std=c++17", "-"],
++        cxx + ["-x", "c++", "-std=gnu++20", "-"],
+         stdin=PIPE,
+         stdout=PIPE,
+         stderr=PIPE,
+@@ -219,7 +219,7 @@ def check_linker_need_libatomic():
+     # Double-check to see if -latomic actually can solve the problem.
+     # https://github.com/grpc/grpc/issues/22491
+     cpp_test = subprocess.Popen(
+-        cxx + ["-x", "c++", "-std=c++17", "-", "-latomic"],
++        cxx + ["-x", "c++", "-std=gnu++20", "-", "-latomic"],
+         stdin=PIPE,
+         stdout=PIPE,
+         stderr=PIPE,
+@@ -262,7 +262,7 @@ if EXTRA_ENV_COMPILE_ARGS is None:
+     EXTRA_ENV_COMPILE_ARGS = ""
+     if "win32" in sys.platform:
+         # MSVC by defaults uses C++14 and C89 so both needs to be configured.
+-        EXTRA_ENV_COMPILE_ARGS += " /std:c++17"
++        EXTRA_ENV_COMPILE_ARGS += " /std:c++20"
+         EXTRA_ENV_COMPILE_ARGS += " /std:c11"
+         # We need to statically link the C++ Runtime, only the C runtime is
+         # available dynamically
+@@ -271,14 +271,18 @@ if EXTRA_ENV_COMPILE_ARGS is None:
+         # https://github.com/grpc/grpc/issues/41951
+         EXTRA_ENV_COMPILE_ARGS += " /Zc:preprocessor"
+     elif "linux" in sys.platform:
+-        # GCC by defaults uses C17 so only C++17 needs to be specified.
+-        #EXTRA_ENV_COMPILE_ARGS += " -std=c++17"
++        # GCC by defaults uses C17 so we specify gnu++20 for C++ (to match
++        # the main build and support modern system Abseil which uses C++20
++        # std::partial_ordering etc.).
++        EXTRA_ENV_COMPILE_ARGS += " -std=gnu++20"
+         EXTRA_ENV_COMPILE_ARGS += (
+             " -fvisibility=hidden -fno-wrapv -fno-exceptions"
+         )
+     elif "darwin" in sys.platform:
+-        # AppleClang by defaults uses C17 so only C++17 needs to be specified.
+-        EXTRA_ENV_COMPILE_ARGS += " -std=c++17"
++        # AppleClang by defaults uses C17 so we specify gnu++20 for C++ (to match
++        # the main build and support modern system Abseil which uses C++20
++        # std::partial_ordering etc.).
++        EXTRA_ENV_COMPILE_ARGS += " -std=gnu++20"
+         EXTRA_ENV_COMPILE_ARGS += (
+             " -stdlib=libc++ -fvisibility=hidden -fno-wrapv -fno-exceptions"
+             " -DHAVE_UNISTD_H"
+@@ -518,7 +522,11 @@ def cython_extensions_and_necessity():
+                 + list(GRPCIO_CC_SRCS)
+                 + core_c_files
+                 + asm_files
+-                + ["third_party/abseil-cpp/absl/log/initialize.cc"]
++                + (
++                    []
++                    if BUILD_WITH_SYSTEM_ABSL
++                    else ["third_party/abseil-cpp/absl/log/initialize.cc"]
++                )
+             ),
+             include_dirs=list(EXTENSION_INCLUDE_DIRECTORIES),
+             libraries=list(EXTENSION_LIBRARIES),
+diff --git a/src/python/grpcio/commands.py b/src/python/grpcio/commands.py
+index 35f7a89b..4ebc095d 100644
+--- a/src/python/grpcio/commands.py
++++ b/src/python/grpcio/commands.py
+@@ -310,7 +310,7 @@ class BuildExt(build_ext.build_ext):
+ 
+         def new_compile(obj, src, ext, cc_args, extra_postargs, pp_opts):
+             # NOTE: keep in sync with setup.py EXTRA_ENV_COMPILE_ARGS.
+-            cpp_specific_args = {"-std=c++17", "-stdlib=libc++"}
++            cpp_specific_args = {"-std=gnu++20"}
+             c_specific_args = {"-std=c11"}
+ 
+             args_to_remove = set()
+-- 
+2.53.0
+

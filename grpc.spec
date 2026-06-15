@@ -20,15 +20,15 @@
 %global s3_shortcommit %(c=%{s3_commit}; echo ${c:0:7})
 
 %global s4_name boringssl
-%global s4_commit c63fadbde60a2224c22189d14c4001bbd2a3a629
+%global s4_commit 2b44a3701a4788e1ef866ddc7f143060a3d196c9
 %global s4_shortcommit %(c=%{s4_commit}; echo ${c:0:7})
 
 %global s5_name data-plane-api
-%global s5_commit 4de3c74cf21a9958c1cf26d8993c55c6e0d28b49
+%global s5_commit 6ef568cf4a67362849911d1d2a546fd9f35db2ff
 %global s5_shortcommit %(c=%{s5_commit}; echo ${c:0:7})
 
 %global s6_name googleapis
-%global s6_commit fe8ba054ad4f7eca946c2d14a63c3f07c0b586a0
+%global s6_commit 2193a2bfcecb92b92aad7a4d81baa428cafd7dfd
 %global s6_shortcommit %(c=%{s6_commit}; echo ${c:0:7})
 
 %global s7_name googletest
@@ -44,7 +44,7 @@
 %global s9_shortcommit %(c=%{s9_commit}; echo ${c:0:7})
 
 %global s10_name protobuf
-%global s10_commit 74211c0dfc2777318ab53c2cd2c317a2ef9012de
+%global s10_commit e59364c38e10de3686a3305ff11fbfc59a10dbd8
 %global s10_shortcommit %(c=%{s10_commit}; echo ${c:0:7})
 
 %global s11_name protoc-gen-validate
@@ -56,12 +56,16 @@
 %global s12_shortcommit %(c=%{s12_commit}; echo ${c:0:7})
 
 %global s13_name xds
-%global s13_commit 3a472e524827f72d1ad621c4983dd5af54c46776
+%global s13_commit ee656c7534f5d7dc23d44dd611689568f72017a6
 %global s13_shortcommit %(c=%{s13_commit}; echo ${c:0:7})
 
+%global s14_name cel-spec
+%global s14_commit 9f069b3ee58b02d6f6736c5ebd6587075c1a1b22
+%global s14_shortcommit %(c=%{s14_commit}; echo ${c:0:7})
+
 Name:           grpc
-Version:        1.75.1
-Release:        6
+Version:        1.81.1
+Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
 Group:          System/Libraries
@@ -79,6 +83,7 @@ Source10:       https://github.com/protocolbuffers/%{s10_name}/archive/%{s10_com
 Source11:       https://github.com/bufbuild/%{s11_name}/archive/%{s11_commit}/%{s11_name}-%{s11_shortcommit}.tar.gz
 Source12:       https://github.com/google/%{s12_name}/archive/%{s12_commit}/%{s12_name}-%{s12_shortcommit}.tar.gz
 Source13:       https://github.com/cncf/%{s13_name}/archive/%{s13_commit}/%{s13_name}-%{s13_shortcommit}.tar.gz
+Source14:       https://github.com/google/%{s14_name}/archive/%{s14_commit}/%{s14_name}-%{s14_shortcommit}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  cmake(absl)
 BuildRequires:  gcc-c++
@@ -105,6 +110,8 @@ BuildRequires:  python-cython
 %patchlist
 grpc-1.53.2-grpc_build-cli-always-and-install-cli.patch
 grpc-1.75.1-dont-set-std-c++-for-c.patch
+0001-Fix-build-with-OpenSSL-4.0.patch
+0002-Support-system-Abseil-in-Python-build-and-bump-C-sta.patch
 
 %description
 gRPC is a modern open source high performance RPC framework that can run in any
@@ -182,7 +189,8 @@ tar xf %{S:10}
 tar xf %{S:11}
 tar xf %{S:12}
 tar xf %{S:13}
-for i in googletest opencensus-proto xds protoc-gen-validate googleapis; do
+tar xf %{S:14}
+for i in googletest opencensus-proto xds protoc-gen-validate googleapis cel-spec; do
 	rm -rf $i
 	mv $i-* $i
 done

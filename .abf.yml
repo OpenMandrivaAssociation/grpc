@@ -1,14 +1,16 @@
 sources:
   benchmark-12235e2.tar.gz: 63ab1c5db46c4f46db7d23cb81661a4b799672d3
   bloaty-60209eb.tar.gz: b185c91ec513d44723e8b4bc6e91014febea35ed
-  boringssl-c63fadb.tar.gz: 48c19560a9e332996d5d1890fe02e3566b798e0e
-  data-plane-api-4de3c74.tar.gz: 5488378a3b78b796aabf53f42893330c0b246b74
-  googleapis-fe8ba05.tar.gz: 7e37ca33bd448da3cefc45abc9ddec1e3005772b
   googletest-52eb810.tar.gz: 7c0be721a7b9e4bd22ee662e37d584a5e2072c27
   opencensus-proto-4aa53e1.tar.gz: 572ec1f1c37082f7e85fc158083affce570a2b52
   opentelemetry-proto-60fa875.tar.gz: ca90832a4f9e12dc1e2dcf78ad71976116f967df
-  protobuf-74211c0.tar.gz: 587cdf646f2bafab427897341e022d61840dc0a1
-  protoc-gen-validate-7b06248.tar.gz: 45ce1a24b8aedd9c0ea32132a75fdd9a0f65d66b
   re2-0c5616d.tar.gz: d62b7d8ecb362a26d694104603e44380b38b1919
   xds-3a472e5.tar.gz: 69427a0ae15f93f3dc2669ebbe2657af3d25927a
-  grpc-1.75.1.tar.gz: caa4d2d39b944baee4cdad1c16fc0bdf2cba6f0a
+  boringssl-2b44a37.tar.gz: 6dc464d6b46c90eeff1d51d0f7b9bcfae1eb7a05
+  data-plane-api-6ef568c.tar.gz: 845363b14c2ca0b8eaa29c18d9e0fe3297a90658
+  googleapis-2193a2b.tar.gz: 2367aeb0bf8da5024715d6953eb3fc2e4073612f
+  protobuf-e59364c.tar.gz: 4422849c72ae5fe06d7140f86c3b0582b2aec57a
+  xds-ee656c7.tar.gz: d66f431940d4f046d7431dee652507602a91b776
+  cel-spec-9f069b3.tar.gz: 17e708f7ea8c1ecc747aa8ad51974e8574cc6152
+  grpc-1.81.1.tar.gz: 98cbd217dda7aa08a9121e1a88f92443e042d2e7
+  protoc-gen-validate-7b06248.tar.gz: 45ce1a24b8aedd9c0ea32132a75fdd9a0f65d66b

@@ -105,6 +105,7 @@ BuildRequires:  pkgconfig(zlib)
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 BuildRequires:  python-cython
+BuildRequires:	python%{pyver}dist(pip)
 %endif
 
 %patchlist

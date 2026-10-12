@@ -65,7 +65,7 @@
 
 Name:           grpc
 Version:        1.83.0
-Release:        1
+Release:        2
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
 Group:          System/Libraries

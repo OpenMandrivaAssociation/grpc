@@ -283,7 +283,7 @@ rm -f %{buildroot}%{_libdir}/pkgconfig/grpcpp_otel_plugin.pc
 %libpackages -d
 
 cat >%{specpartsdir}/%{devname}.specpart <<EOF
-%%%package -n     %{devname}
+%%package -n     %{devname}
 Summary:        gRPC library development files
 Group:          Development/C++
 Requires:       %{name}-cli = %{EVRD}
@@ -296,10 +296,10 @@ for i in $LIBPACKAGES; do
 done
 
 cat >>%{specpartsdir}/%{devname}.specpart <<EOF
-%%%description -n %{devname}
+%%description -n %{devname}
 Development headers and files for gRPC libraries.
 
-%%%files -n %{devname}
+%%files -n %{devname}
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*
 %{_libdir}/cmake/grpc/

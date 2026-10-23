@@ -6,7 +6,6 @@ sources:
   data-plane-api-6ef568c.tar.gz: 845363b14c2ca0b8eaa29c18d9e0fe3297a90658
   googleapis-2193a2b.tar.gz: 2367aeb0bf8da5024715d6953eb3fc2e4073612f
   googletest-52eb810.tar.gz: 7c0be721a7b9e4bd22ee662e37d584a5e2072c27
-  grpc-1.83.0.tar.gz: f3166ebad4024a85198d888093c4048f75dc3b11
   opencensus-proto-4aa53e1.tar.gz: 572ec1f1c37082f7e85fc158083affce570a2b52
   opentelemetry-proto-60fa875.tar.gz: ca90832a4f9e12dc1e2dcf78ad71976116f967df
   protobuf-e59364c.tar.gz: 4422849c72ae5fe06d7140f86c3b0582b2aec57a
@@ -14,3 +13,5 @@ sources:
   re2-0c5616d.tar.gz: d62b7d8ecb362a26d694104603e44380b38b1919
   xds-3a472e5.tar.gz: 69427a0ae15f93f3dc2669ebbe2657af3d25927a
   xds-ee656c7.tar.gz: d66f431940d4f046d7431dee652507602a91b776
+  grpc-proto-ec30f58.tar.gz: 8b92f62d7ff0ea8ee98fc024b76592de882e2c6a
+  grpc-1.84.1.tar.gz: fe8a7f92cb523850241e7a9c34da5610f68cdae0

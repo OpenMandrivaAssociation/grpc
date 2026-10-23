@@ -63,9 +63,13 @@
 %global s14_commit 9f069b3ee58b02d6f6736c5ebd6587075c1a1b22
 %global s14_shortcommit %(c=%{s14_commit}; echo ${c:0:7})
 
+%global s15_name grpc-proto
+%global s15_commit ec30f589e2519d595688b9a42f88a91bdd6b733f
+%global s15_shortcommit %(c=%{s15_commit}; echo ${c:0:7})
+
 Name:           grpc
-Version:        1.83.0
-Release:        2
+Version:        1.84.1
+Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
 Group:          System/Libraries
@@ -84,6 +88,7 @@ Source11:       https://github.com/bufbuild/%{s11_name}/archive/%{s11_commit}/%{
 Source12:       https://github.com/google/%{s12_name}/archive/%{s12_commit}/%{s12_name}-%{s12_shortcommit}.tar.gz
 Source13:       https://github.com/cncf/%{s13_name}/archive/%{s13_commit}/%{s13_name}-%{s13_shortcommit}.tar.gz
 Source14:       https://github.com/google/%{s14_name}/archive/%{s14_commit}/%{s14_name}-%{s14_shortcommit}.tar.gz
+Source15:       https://github.com/grpc/%{s15_name}/archive/%{s15_commit}/%{s15_name}-%{s15_shortcommit}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  cmake(absl)
 BuildRequires:  gcc-c++
@@ -191,7 +196,8 @@ tar xf %{S:11}
 tar xf %{S:12}
 tar xf %{S:13}
 tar xf %{S:14}
-for i in googletest opencensus-proto xds protoc-gen-validate googleapis cel-spec; do
+tar xf %{S:15}
+for i in googletest opencensus-proto xds protoc-gen-validate googleapis cel-spec grpc-proto; do
 	rm -rf $i
 	mv $i-* $i
 done

@@ -20,7 +20,7 @@
 %global s3_shortcommit %(c=%{s3_commit}; echo ${c:0:7})
 
 %global s4_name boringssl
-%global s4_commit 2b44a3701a4788e1ef866ddc7f143060a3d196c9
+%global s4_commit 3adc3d1aba162a578e2547f329fcce8659b8e89c
 %global s4_shortcommit %(c=%{s4_commit}; echo ${c:0:7})
 
 %global s5_name data-plane-api
@@ -44,7 +44,7 @@
 %global s9_shortcommit %(c=%{s9_commit}; echo ${c:0:7})
 
 %global s10_name protobuf
-%global s10_commit e59364c38e10de3686a3305ff11fbfc59a10dbd8
+%global s10_commit 35cd01f9fe9afbeea38cc7b979a3b6bfcde82c03
 %global s10_shortcommit %(c=%{s10_commit}; echo ${c:0:7})
 
 %global s11_name protoc-gen-validate
@@ -64,11 +64,11 @@
 %global s14_shortcommit %(c=%{s14_commit}; echo ${c:0:7})
 
 %global s15_name grpc-proto
-%global s15_commit ec30f589e2519d595688b9a42f88a91bdd6b733f
+%global s15_commit dd549fc4ed04b60b0fdd3866b82ef0a7c87c6e4f
 %global s15_shortcommit %(c=%{s15_commit}; echo ${c:0:7})
 
 Name:           grpc
-Version:        1.84.1
+Version:        1.85.0
 Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
@@ -116,7 +116,6 @@ BuildRequires:	python%{pyver}dist(pip)
 %patchlist
 grpc-1.53.2-grpc_build-cli-always-and-install-cli.patch
 grpc-1.75.1-dont-set-std-c++-for-c.patch
-0001-Fix-build-with-OpenSSL-4.0.patch
 0002-Support-system-Abseil-in-Python-build-and-bump-C-sta.patch
 
 %description

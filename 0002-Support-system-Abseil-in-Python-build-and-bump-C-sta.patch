@@ -1,41 +1,6 @@
-From e35dccf942aafa7cf51bb88f8c9fa2e59449d9dc Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Bernhard=20Rosenkr=C3=A4nzer?= <bero@lindev.ch>
-Date: Mon, 15 Jun 2026 14:19:57 +0200
-Subject: [PATCH 2/2] Support system Abseil in Python build and bump C++
- standard to gnu++20
-
-- GRPC_PYTHON_BUILD_SYSTEM_ABSL=1 now correctly skips all vendored
-  Abseil sources (the CORE_C_FILES filter plus the explicit
-  third_party/abseil-cpp/absl/log/initialize.cc addition) and links
-  the system libabsl_* libraries instead.
-- Bump the default C++ language standard from -std=c++17 (or /std:c++17)
-  to -std=gnu++20 everywhere it is injected for the grpcio extension
-  build:
-  * setup.py: libatomic probe, EXTRA_ENV_COMPILE_ARGS for Linux,
-    Darwin, and Windows, plus comments.
-  * src/python/grpcio/commands.py: cpp_specific_args sanitiser set
-    (used by the _compile monkey-patch in BuildExt).
-- This matches the main CMake/ninja build and is necessary for current
-  system Abseil headers (C++20 three-way comparison types,
-  enable_if_t shims, etc.).
-
-Users who want to keep using the system Abseil (to centralise fixes)
-can now do:
-
-    GRPC_PYTHON_BUILD_SYSTEM_ABSL=1 python setup.py build_ext --inplace
-
-(or the equivalent pip wheel / etc. invocation) and the Python
-bindings will build cleanly.
----
- setup.py                      | 24 ++++++++++++++++--------
- src/python/grpcio/commands.py |  2 +-
- 2 files changed, 17 insertions(+), 9 deletions(-)
-
-diff --git a/setup.py b/setup.py
-index 48ce60bf..cf24844b 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -208,7 +208,7 @@ def check_linker_need_libatomic():
+@@ -209,7 +209,7 @@
      )
      cxx = shlex.split(os.environ.get("CXX", "c++"))
      cpp_test = subprocess.Popen(
@@ -44,7 +9,7 @@ index 48ce60bf..cf24844b 100644
          stdin=PIPE,
          stdout=PIPE,
          stderr=PIPE,
-@@ -219,7 +219,7 @@ def check_linker_need_libatomic():
+@@ -220,7 +220,7 @@
      # Double-check to see if -latomic actually can solve the problem.
      # https://github.com/grpc/grpc/issues/22491
      cpp_test = subprocess.Popen(
@@ -53,7 +18,7 @@ index 48ce60bf..cf24844b 100644
          stdin=PIPE,
          stdout=PIPE,
          stderr=PIPE,
-@@ -262,7 +262,7 @@ if EXTRA_ENV_COMPILE_ARGS is None:
+@@ -263,7 +263,7 @@
      EXTRA_ENV_COMPILE_ARGS = ""
      if "win32" in sys.platform:
          # MSVC by defaults uses C++14 and C89 so both needs to be configured.
@@ -62,7 +27,7 @@ index 48ce60bf..cf24844b 100644
          EXTRA_ENV_COMPILE_ARGS += " /std:c11"
          # We need to statically link the C++ Runtime, only the C runtime is
          # available dynamically
-@@ -271,14 +271,18 @@ if EXTRA_ENV_COMPILE_ARGS is None:
+@@ -272,14 +272,18 @@
          # https://github.com/grpc/grpc/issues/41951
          EXTRA_ENV_COMPILE_ARGS += " /Zc:preprocessor"
      elif "linux" in sys.platform:
@@ -85,7 +50,7 @@ index 48ce60bf..cf24844b 100644
          EXTRA_ENV_COMPILE_ARGS += (
              " -stdlib=libc++ -fvisibility=hidden -fno-wrapv -fno-exceptions"
              " -DHAVE_UNISTD_H"
-@@ -518,7 +522,11 @@ def cython_extensions_and_necessity():
+@@ -528,7 +532,11 @@
                  + list(GRPCIO_CC_SRCS)
                  + core_c_files
                  + asm_files
@@ -98,11 +63,9 @@ index 48ce60bf..cf24844b 100644
              ),
              include_dirs=list(EXTENSION_INCLUDE_DIRECTORIES),
              libraries=list(EXTENSION_LIBRARIES),
-diff --git a/src/python/grpcio/commands.py b/src/python/grpcio/commands.py
-index 35f7a89b..4ebc095d 100644
 --- a/src/python/grpcio/commands.py
 +++ b/src/python/grpcio/commands.py
-@@ -310,7 +310,7 @@ class BuildExt(build_ext.build_ext):
+@@ -310,7 +310,7 @@
  
          def new_compile(obj, src, ext, cc_args, extra_postargs, pp_opts):
              # NOTE: keep in sync with setup.py EXTRA_ENV_COMPILE_ARGS.
@@ -111,6 +74,3 @@ index 35f7a89b..4ebc095d 100644
              c_specific_args = {"-std=c11"}
  
              args_to_remove = set()
--- 
-2.53.0
-

@@ -237,13 +237,14 @@ sed -r -i 's/(std=c\+\+)1[1,4]/\1%{cpp_std}/g' \
 %build
 export CXXFLAGS="%{build_cxxflags} -Wno-deprecated-declarations -std=gnu++%{cpp_std}"
 export LDFLAGS="%{build_ldflags} -Wno-deprecated-declarations -std=gnu++%{cpp_std}"
+# Tests are not installed or run. Compiling them with debug info fills the builder disk.
 %cmake -GNinja                            \
        -DCMAKE_CXX_STANDARD=%{cpp_std}    \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
        -DgRPC_INSTALL=ON                  \
        -DgRPC_INSTALL_LIBDIR:PATH="%{_lib}" \
        -DgRPC_INSTALL_CMAKEDIR:PATH="%{_libdir}/cmake/grpc" \
-       -DgRPC_BUILD_TESTS:BOOL=ON         \
+       -DgRPC_BUILD_TESTS:BOOL=OFF        \
        -DgRPC_ABSL_PROVIDER=package       \
        -DgRPC_BENCHMARK_PROVIDER=package  \
        -DgRPC_CARES_PROVIDER=package      \

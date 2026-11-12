@@ -68,7 +68,7 @@
 %global s15_shortcommit %(c=%{s15_commit}; echo ${c:0:7})
 
 Name:           grpc
-Version:        1.85.1
+Version:        1.85.2
 Release:        1
 Summary:        Modern, open source, high-performance remote procedure call (RPC) framework
 License:        ASL 2.0
